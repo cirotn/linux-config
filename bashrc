@@ -137,3 +137,19 @@ unset __conda_setup
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Auto-env, adapted from https://github.com/chdoig/conda-auto-env
+function conda_auto_env() {
+    if [ -e "environment.yml" ]; then
+        # echo "environment.yml file found"
+        ENV=$(head -n 1 environment.yml | cut -f2 -d ' ')
+        # Check if you are already in the environment
+        if [[ $PATH != *$ENV* ]]; then
+            # Check if the environment exists
+            conda activate $ENV
+		fi
+    fi
+}
+
+export PROMPT_COMMAND=conda_auto_env
+
